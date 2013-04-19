@@ -1,0 +1,14 @@
+{
+		"copyFiles": 
+		[
+			{
+				"name" : "ChartBoostPlugin.java", 
+				"srcPath" : "./src",
+				"packageName" : "com.tealeaf.plugin.plugins" 
+			}
+		],
+		"jars":
+		[
+			"./libs/chartboost.jar"
+		]
+}
