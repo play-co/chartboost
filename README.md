@@ -1,8 +1,15 @@
 chartboost
 ==========
 
-Chartboost android plugin
+Chartboost Android Plugin
 
-To use this plugin, add the relative path to this plugin folder to your plugin/config.json in native-android.
+Recently Adapted to the new plugin system.
 
-Note: Changes in the native-android-priv branch feature-plugin-jars are needed to use this plugin
+Manifest key structure:
+
+"android": {
+	"chartboost": {
+		"appId": "",
+		"appSignature": ""
+	}
+}

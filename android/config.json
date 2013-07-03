@@ -1,0 +1,7 @@
+{
+    "copyFiles": ["ChartBoostPlugin.java"],
+    "libraries": [],
+    "jars": ["chartboost.jar"],
+    "injectionXML": "manifest.xml",
+	"injectionXSL": "manifest.xsl"
+}

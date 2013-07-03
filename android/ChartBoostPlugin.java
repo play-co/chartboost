@@ -159,10 +159,10 @@ public class ChartBoostPlugin implements IPlugin {
 			JSONObject chartboost = android.getJSONObject("chartboost");
 			appId = chartboost.getString("appId");
 			appSignature = chartboost.getString("appSignature");
-			//Log.d("CHART", appId);
-			//Log.d("CHART", appSignature);
+			Log.d("CHARTBOOST", appId);
+			Log.d("CHARTBOOST", appSignature);
 		} catch (Exception e) {
-			Log.d("chartboost", "Unable to read appId and appSignature keys from manifest");
+			Log.d("CHARTBOOST", "Unable to read appId and appSignature keys from manifest");
 		}
 		this.mActivity = activity;
 		this.cb = Chartboost.sharedChartboost();
