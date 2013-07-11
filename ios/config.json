@@ -1,0 +1,10 @@
+{
+	"code": [
+		"Chartboost.h",
+		"ChartboostPlugin.h",
+		"ChartboostPlugin.mm"
+	],
+	"frameworks": [
+		"libChartboost.a"
+	]
+}
