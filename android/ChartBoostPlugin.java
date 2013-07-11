@@ -142,37 +142,25 @@ public class ChartBoostPlugin implements IPlugin {
 	}
 
 	public void onCreate(Activity activity, Bundle savedInstanceState) {
-		String appId = "";
-		String appSignature = "";
-		try {
-			InputStream is = activity.getAssets().open("resources/manifest.json");
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			String readLine;
-			String manifestString = "";
-			while ((readLine = br.readLine()) != null) {
-				manifestString += readLine;
-			}
-			br.close();
-
-			JSONObject manifest = new JSONObject(manifestString);
-			JSONObject android = manifest.getJSONObject("android");
-			JSONObject chartboost = android.getJSONObject("chartboost");
-			appId = chartboost.getString("appId");
-			appSignature = chartboost.getString("appSignature");
-			Log.d("CHARTBOOST", appId);
-			Log.d("CHARTBOOST", appSignature);
-		} catch (Exception e) {
-			Log.d("CHARTBOOST", "Unable to read appId and appSignature keys from manifest");
-		}
 		this.mActivity = activity;
-		this.cb = Chartboost.sharedChartboost();
-		this.cb.onCreate(activity, appId, appSignature, null);
-		
-		// Notify the beginning of a user session
-		this.cb.startSession();
 
-		// Show an interstitial
-		//this.cb.showInterstitial();
+        PackageManager manager = activity.getPackageManager();
+        String appID = "", appSignature = "";
+        try {
+            Bundle meta = manager.getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            if (meta != null) {
+                appID = meta.getString("CHARTBOOST_APP_ID");
+                appSignature = meta.getString("CHARTBOOST_APP_SIGNATURE");
+            }
+        } catch (Exception e) {
+            android.util.Log.d("EXCEPTION", "" + e.getMessage());
+        }
+
+		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
+
+		this.cb = Chartboost.sharedChartboost();
+		this.cb.onCreate(activity, appID, appSignature, null);
+		this.cb.startSession();
 	}
 
 	public void onResume() {
