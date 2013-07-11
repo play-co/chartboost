@@ -21,7 +21,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 public class ChartBoostPlugin implements IPlugin {
 
 	private Chartboost cb;
-	private boolean mConsumeBackPressed;
 	private Activity mActivity;
 
 	private class PluginDelegate implements ChartboostDelegate {
@@ -197,11 +196,10 @@ public class ChartBoostPlugin implements IPlugin {
 	}
 
 	public boolean consumeOnBackPressed() {
-		return mConsumeBackPressed;
+		return true;
 	}
 
 	public void onBackPressed() {
-		mConsumeBackPressed = this.cb.onBackPressed();
 	}
 
 }
