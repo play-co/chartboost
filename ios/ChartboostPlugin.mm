@@ -21,8 +21,8 @@
 - (void) initializeWithManifest:(NSDictionary *)manifest appDelegate:(TeaLeafAppDelegate *)appDelegate {
 	@try {
 		NSDictionary *ios = [manifest valueForKey:@"ios"];
-		NSString *appID = [ios valueForKey:@"ChartboostAppID"];
-		NSString *appSignature = [ios valueForKey:@"ChartboostAppSignature"];
+		NSString *appID = [ios valueForKey:@"chartboostAppID"];
+		NSString *appSignature = [ios valueForKey:@"chartboostAppSignature"];
 
 		Chartboost *cb = [Chartboost sharedChartboost];
 		cb.appId = appID;

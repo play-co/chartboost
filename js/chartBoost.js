@@ -1,4 +1,4 @@
-var ChartBoost = Class(function () {
+var Chartboost = Class(function () {
 });
 
-exports = new ChartBoost();
+exports = new Chartboost();
