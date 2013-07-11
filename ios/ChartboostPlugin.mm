@@ -1,7 +1,7 @@
-#import "FlurryPlugin.h"
-#import "Flurry.h"
+#import "ChartboostPlugin.h"
+#import "Chartboost.h"
 
-@implementation FlurryPlugin
+@implementation ChartboostPlugin
 
 // The plugin must call super dealloc.
 - (void) dealloc {
@@ -21,35 +21,19 @@
 - (void) initializeWithManifest:(NSDictionary *)manifest appDelegate:(TeaLeafAppDelegate *)appDelegate {
 	@try {
 		NSDictionary *ios = [manifest valueForKey:@"ios"];
-		NSString *flurryKey = [ios valueForKey:@"FlurryKey"];
+		NSString *appID = [ios valueForKey:@"ChartboostAppID"];
+		NSString *appSignature = [ios valueForKey:@"ChartboostAppSignature"];
 
-		[Flurry setDebugLogEnabled:YES];
-		[Flurry startSession:flurryKey];
+		Chartboost *cb = [Chartboost sharedChartboost];
+		cb.appId = appID;
+		cb.appSignature = appSignature;
 
-		NSLog(@"{flurry} Initialized with manifest FlurryKey: '%@'", flurryKey);
+		[cb startSession];
+
+		NSLog(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
 	}
 	@catch (NSException *exception) {
-		NSLog(@"{flurry} Failure to get ios:FlurryKey from manifest file: %@", exception);
-	}
-}
-
-- (void) logEvent:(NSDictionary *)jsonObject {
-	@try {
-		NSString *eventName = [jsonObject valueForKey:@"eventName"];
-		
-		NSDictionary *evtParams = [jsonObject objectForKey:@"params"];
-		if (!evtParams || [evtParams count] <= 0) {
-			[Flurry logEvent:eventName];
-
-			NSLOG(@"{flurry} Delivered event '%@'", eventName);
-		} else {
-			[Flurry logEvent:eventName withParameters:evtParams];
-
-			NSLOG(@"{flurry} Delivered event '%@' with %d params", eventName, (int)[evtParams count]);
-		}
-	}
-	@catch (NSException *exception) {
-		NSLOG(@"{flurry} Exception while processing event: ", exception);
+		NSLog(@"{chartboost} Failure to get ios:Chartboost keys from manifest file: %@", exception);
 	}
 }
 

@@ -5,6 +5,7 @@
 		"ChartboostPlugin.mm"
 	],
 	"frameworks": [
+		"AdSupport",
 		"libChartboost.a"
 	]
 }
