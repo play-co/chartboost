@@ -25,8 +25,8 @@ To specify your game's AppID and AppSignature, edit the `manifest.json "android"
 			"72": "resources/icons/android72.png",
 			"96": "resources/icons/android96.png"
 		},
-		"ChartboostAppID": "51de1c4f17ba47cd62000000",
-		"ChartboostAppSignature": "4a86b060d0f5c17a34f48bedf49c8a63280607ce"
+		"ChartboostAppID": "51de21ed17ba477663000050",
+		"ChartboostAppSignature": "079827b6a0e831ef37ead6a2334bc712f28f9a1f"
 	},
 ~~~
 
