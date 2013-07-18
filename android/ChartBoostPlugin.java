@@ -149,8 +149,8 @@ public class ChartBoostPlugin implements IPlugin {
         try {
             Bundle meta = manager.getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA).metaData;
             if (meta != null) {
-                appID = meta.getString("CHARTBOOST_APP_ID");
-                appSignature = meta.getString("CHARTBOOST_APP_SIGNATURE");
+                appID = meta.get("CHARTBOOST_APP_ID").toString();
+                appSignature = meta.get("CHARTBOOST_APP_SIGNATURE").toString();
             }
         } catch (Exception e) {
             android.util.Log.d("EXCEPTION", "" + e.getMessage());
