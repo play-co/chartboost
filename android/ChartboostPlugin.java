@@ -18,7 +18,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
-public class ChartBoostPlugin implements IPlugin {
+public class ChartboostPlugin implements IPlugin {
 
 	private Chartboost cb;
 	private Activity mActivity;
@@ -27,67 +27,67 @@ public class ChartBoostPlugin implements IPlugin {
 		@Override
 		public void didCacheMoreApps() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didClickInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didClickMoreApps() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didCloseInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didCloseMoreApps() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didDismissInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didDismissMoreApps() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didFailToLoadInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didFailToLoadMoreApps() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didShowInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void didShowMoreApps() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -129,32 +129,32 @@ public class ChartBoostPlugin implements IPlugin {
 		@Override
 		public void didCacheInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-			
+
 		};
 	}
 
-	public ChartBoostPlugin() {
+	public ChartboostPlugin() {
 
 	}
 
 	public void onCreateApplication(Context applicationContext) {
-	
+
 	}
 
 	public void onCreate(Activity activity, Bundle savedInstanceState) {
 		this.mActivity = activity;
 
-        PackageManager manager = activity.getPackageManager();
-        String appID = "", appSignature = "";
-        try {
-            Bundle meta = manager.getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA).metaData;
-            if (meta != null) {
-                appID = meta.get("CHARTBOOST_APP_ID").toString();
-                appSignature = meta.get("CHARTBOOST_APP_SIGNATURE").toString();
-            }
-        } catch (Exception e) {
-            android.util.Log.d("EXCEPTION", "" + e.getMessage());
-        }
+		PackageManager manager = activity.getPackageManager();
+		String appID = "", appSignature = "";
+		try {
+			Bundle meta = manager.getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA).metaData;
+			if (meta != null) {
+				appID = meta.get("CHARTBOOST_APP_ID").toString();
+				appSignature = meta.get("CHARTBOOST_APP_SIGNATURE").toString();
+			}
+		} catch (Exception e) {
+			android.util.Log.d("EXCEPTION", "" + e.getMessage());
+		}
 
 		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
 
@@ -163,8 +163,12 @@ public class ChartBoostPlugin implements IPlugin {
 		this.cb.startSession();
 	}
 
+	public void showInterstitial(String jsonData) {
+		this.cb.showInterstitial();
+	}
+
 	public void onResume() {
-	
+
 	}
 
 	public void onStart() {
@@ -172,7 +176,7 @@ public class ChartBoostPlugin implements IPlugin {
 	}
 
 	public void onPause() {
-	
+
 	}
 
 	public void onStop() {
@@ -184,15 +188,15 @@ public class ChartBoostPlugin implements IPlugin {
 	}
 
 	public void onNewIntent(Intent intent) {
-	
+
 	}
 
 	public void setInstallReferrer(String referrer) {
-	
+
 	}
 
 	public void onActivityResult(Integer request, Integer result, Intent data) {
-	
+
 	}
 
 	public boolean consumeOnBackPressed() {
@@ -200,6 +204,9 @@ public class ChartBoostPlugin implements IPlugin {
 	}
 
 	public void onBackPressed() {
+          // If an interstitial is on screen, close it. Otherwise continue as normal.
+          if (this.cb.onBackPressed()) {
+            return;
+          }
 	}
-
 }
