@@ -1,5 +1,4 @@
 #import "ChartboostPlugin.h"
-#import "Chartboost.h"
 
 @implementation ChartboostPlugin
 
@@ -14,6 +13,7 @@
 	if (!self) {
 		return nil;
 	}
+	self.cb = nil;
 
 	return self;
 }
@@ -24,11 +24,11 @@
 		NSString *appID = [ios valueForKey:@"chartboostAppID"];
 		NSString *appSignature = [ios valueForKey:@"chartboostAppSignature"];
 
-		Chartboost *cb = [Chartboost sharedChartboost];
-		cb.appId = appID;
-		cb.appSignature = appSignature;
+		self.cb = [Chartboost sharedChartboost];
+		self.cb.appId = appID;
+		self.cb.appSignature = appSignature;
 
-		[cb startSession];
+		[self.cb startSession];
 
 		NSLog(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
 	}
@@ -37,5 +37,7 @@
 	}
 }
 
+- (void) showInterstitial:(NSDictionary *)jsonObject {
+	[self.cb showInterstitial];
+}
 @end
-

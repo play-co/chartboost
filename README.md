@@ -49,3 +49,15 @@ To specify your game's AppID and AppSignature, edit the `manifest.json "android"
 Note that the manifest keys are case-sensitive.
 
 You can test for successful integration via the Chartboost website after successfully building and running your game on a network-connected device.
+
+To show interstitials using Chartboost in your game, import the chartboost object:
+
+~~~
+import plugins.chartboost.chartBoost as chartBoost;
+~~~
+
+Then show interstitials by calling:
+
+~~~
+chartBoost.showInterstitial();
+~~~
