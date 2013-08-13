@@ -204,9 +204,9 @@ public class ChartboostPlugin implements IPlugin {
 	}
 
 	public void onBackPressed() {
-          // If an interstitial is on screen, close it. Otherwise continue as normal.
-          if (this.cb.onBackPressed()) {
-            return;
-          }
+		// If an interstitial is on screen, close it. Otherwise continue as normal.
+		if (this.cb.onBackPressed()) {
+			return;
+		}
 	}
 }
