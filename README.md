@@ -56,7 +56,13 @@ To show interstitials using Chartboost in your game, import the chartboost objec
 import plugins.chartboost.chartBoost as chartBoost;
 ~~~
 
-Then show interstitials by calling:
+Cache interstitials by calling:
+
+~~~
+chartBoost.cacheInterstitial();
+~~~
+
+Then show them by calling:
 
 ~~~
 chartBoost.showInterstitial();

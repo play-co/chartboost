@@ -129,7 +129,6 @@ public class ChartboostPlugin implements IPlugin {
 		@Override
 		public void didCacheInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-
 		};
 	}
 
@@ -157,14 +156,19 @@ public class ChartboostPlugin implements IPlugin {
 		}
 
 		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
-
 		this.cb = Chartboost.sharedChartboost();
 		this.cb.onCreate(activity, appID, appSignature, null);
 		this.cb.startSession();
 	}
 
 	public void showInterstitial(String jsonData) {
-		this.cb.showInterstitial();
+		if(this.cb.hasCachedInterstitial()) {
+			this.cb.showInterstitial();
+		}
+	}
+
+	public void cacheInterstitial(String jsonData) {
+		this.cb.cacheInterstitial();
 	}
 
 	public void onResume() {
@@ -204,9 +208,9 @@ public class ChartboostPlugin implements IPlugin {
 	}
 
 	public void onBackPressed() {
-          // If an interstitial is on screen, close it. Otherwise continue as normal.
-          if (this.cb.onBackPressed()) {
-            return;
-          }
+		// If an interstitial is on screen, close it. Otherwise continue as normal.
+		if (this.cb.onBackPressed()) {
+			return;
+		}
 	}
 }
