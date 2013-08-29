@@ -37,7 +37,13 @@
 	}
 }
 
+- (void) cacheInterstitial:(NSDictionary *)jsonObject {
+	[self.cb cacheInterstitial];
+}
+
 - (void) showInterstitial:(NSDictionary *)jsonObject {
-	[self.cb showInterstitial];
+	if([self.cb hasCachedInterstitial]) {
+		[self.cb showInterstitial];
+	}
 }
 @end
