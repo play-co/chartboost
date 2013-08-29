@@ -1,9 +1,10 @@
 var Chartboost = Class(function () {
 	this.showInterstitial = function() {
-		logger.log("{chartboost}, showing interstitial");
-		NATIVE && NATIVE.plugins && NATIVE.plugins.sendEvent &&
-			NATIVE.plugins.sendEvent("ChartboostPlugin", "showInterstitial",
-				JSON.stringify({}));
+		NATIVE.plugins.sendEvent("ChartboostPlugin", "showInterstitial", JSON.stringify({}));
+	};
+	
+	this.cacheInterstitial = function() {
+		NATIVE.plugins.sendEvent("ChartboostPlugin", "cacheInterstitial", JSON.stringify({}));
 	};
 });
 
