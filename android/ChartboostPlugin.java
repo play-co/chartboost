@@ -79,6 +79,12 @@ public class ChartboostPlugin implements IPlugin {
 		}
 
 		@Override
+		public void didFailToLoadUrl(String arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
 		public void didShowInterstitial(String arg0) {
 			// TODO Auto-generated method stub
 
