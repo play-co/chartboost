@@ -1,6 +1,7 @@
 package com.tealeaf.plugin.plugins;
 
 import com.tealeaf.logger;
+import com.tealeaf.EventQueue;
 import com.tealeaf.plugin.IPlugin;
 import java.io.*;
 import org.json.JSONArray;
@@ -22,6 +23,27 @@ public class ChartboostPlugin implements IPlugin {
 
 	private Chartboost cb;
 	private Activity mActivity;
+
+	public class ChartboostAdNotAvailable extends com.tealeaf.event.Event {
+
+		public ChartboostAdNotAvailable() {
+			super("ChartboostAdNotAvailable");
+		}
+	}
+
+	public class ChartboostAdAvailable extends com.tealeaf.event.Event {
+
+		public ChartboostAdAvailable() {
+			super("ChartboostAdAvailable");
+		}
+	}
+
+	public class ChartboostAdDismissed extends com.tealeaf.event.Event {
+
+		public ChartboostAdDismissed() {
+			super("ChartboostAdDismissed");
+		}
+	}
 
 	private class PluginDelegate implements ChartboostDelegate {
 		@Override
@@ -56,7 +78,7 @@ public class ChartboostPlugin implements IPlugin {
 
 		@Override
 		public void didDismissInterstitial(String arg0) {
-			// TODO Auto-generated method stub
+			EventQueue.pushEvent(new ChartboostAdDismissed());
 
 		}
 
@@ -68,7 +90,7 @@ public class ChartboostPlugin implements IPlugin {
 
 		@Override
 		public void didFailToLoadInterstitial(String arg0) {
-			// TODO Auto-generated method stub
+			EventQueue.pushEvent(new ChartboostAdNotAvailable());
 
 		}
 
@@ -134,7 +156,7 @@ public class ChartboostPlugin implements IPlugin {
 
 		@Override
 		public void didCacheInterstitial(String arg0) {
-			// TODO Auto-generated method stub
+			EventQueue.pushEvent(new ChartboostAdAvailable());
 		};
 	}
 
@@ -163,7 +185,7 @@ public class ChartboostPlugin implements IPlugin {
 
 		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
 		this.cb = Chartboost.sharedChartboost();
-		this.cb.onCreate(activity, appID, appSignature, null);
+		this.cb.onCreate(activity, appID, appSignature, new PluginDelegate());
 		this.cb.startSession();
 	}
 

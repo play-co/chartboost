@@ -27,6 +27,7 @@
 		self.cb = [Chartboost sharedChartboost];
 		self.cb.appId = appID;
 		self.cb.appSignature = appSignature;
+		self.cb.delegate = self;
 
 		[self.cb startSession];
 
@@ -45,5 +46,26 @@
 	if([self.cb hasCachedInterstitial]) {
 		[self.cb showInterstitial];
 	}
+}
+
+- (void)didDismissInterstitial:(NSString *)location {
+	NSLog(@"{chartboost} dismissed interstitial at location %@", location);
+    [[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+                                          @"ChartboostAdDismissed",@"name",
+                                          nil]];
+}
+
+- (void)didFailToLoadInterstitial:(NSString *)location {
+	NSLog(@"{chartboost} failure to load interstitial at location %@", location);
+    [[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+                                          @"ChartboostAdNotAvailable",@"name",
+                                          nil]];
+}
+
+- (void)didCacheInterstitial:(NSString *)location {
+	NSLog(@"{chartboost} interstitial cached at location %@", location);
+    [[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+                                          @"ChartboostAdAvailable",@"name",
+                                          nil]];
 }
 @end
