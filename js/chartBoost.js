@@ -1,6 +1,6 @@
 import util.setProperty as setProperty;
 
-var onOfferClose, onAdAvailable, onAdNotAvailable;
+var onAdDismissed, onAdAvailable, onAdNotAvailable;
 
 var Chartboost = Class(function () {
 	this.init = function(opts) {
