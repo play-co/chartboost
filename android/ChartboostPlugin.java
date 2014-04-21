@@ -120,38 +120,32 @@ public class ChartboostPlugin implements IPlugin {
 
 		@Override
 		public boolean shouldDisplayInterstitial(String arg0) {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
 		public boolean shouldDisplayLoadingViewForMoreApps() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
 		public boolean shouldDisplayMoreApps() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
 		public boolean shouldRequestInterstitial(String arg0) {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
 		public boolean shouldRequestInterstitialsInFirstSession() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
 		public boolean shouldRequestMoreApps() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override
