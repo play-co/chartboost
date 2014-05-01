@@ -1,4 +1,5 @@
 #import "ChartboostPlugin.h"
+#import "platform/log.h"
 
 @implementation ChartboostPlugin
 
@@ -30,10 +31,10 @@
 
 		[self.cb startSession];
 
-		NSLog(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
+		NSLOG(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
 	}
 	@catch (NSException *exception) {
-		NSLog(@"{chartboost} Failure to get ios:Chartboost keys from manifest file: %@", exception);
+		NSLOG(@"{chartboost} Failure to get ios:Chartboost keys from manifest file: %@", exception);
 	}
 }
 
