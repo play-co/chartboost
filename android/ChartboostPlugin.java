@@ -9,6 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.chartboost.sdk.*;
+import com.chartboost.sdk.Chartboost.CBAgeGateConfirmation;
+import com.chartboost.sdk.Model.CBError.CBImpressionError;
+import com.chartboost.sdk.Model.CBError.CBClickError;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -49,73 +52,60 @@ public class ChartboostPlugin implements IPlugin {
 		@Override
 		public void didCacheMoreApps() {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void didClickInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void didClickMoreApps() {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void didCloseInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void didCloseMoreApps() {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void didDismissInterstitial(String arg0) {
 			EventQueue.pushEvent(new ChartboostAdDismissed());
-
 		}
 
 		@Override
 		public void didDismissMoreApps() {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
-		public void didFailToLoadInterstitial(String arg0) {
+		public void didFailToLoadInterstitial(String arg0, CBImpressionError error) {
 			EventQueue.pushEvent(new ChartboostAdNotAvailable());
-
 		}
 
 		@Override
-		public void didFailToLoadMoreApps() {
-			// TODO Auto-generated method stub
-
+		public void didFailToRecordClick(String uri, CBClickError error) {
 		}
 
 		@Override
-		public void didFailToLoadUrl(String arg0) {
+		public void didFailToLoadMoreApps(CBImpressionError error) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
 		public void didShowInterstitial(String arg0) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void didShowMoreApps() {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
@@ -151,6 +141,11 @@ public class ChartboostPlugin implements IPlugin {
 		@Override
 		public void didCacheInterstitial(String arg0) {
 			EventQueue.pushEvent(new ChartboostAdAvailable());
+		}
+
+		@Override
+		public boolean shouldPauseClickForConfirmation(CBAgeGateConfirmation arg0) {
+			return false;
 		};
 	}
 
@@ -180,7 +175,7 @@ public class ChartboostPlugin implements IPlugin {
 		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
 		this.cb = Chartboost.sharedChartboost();
 		this.cb.onCreate(activity, appID, appSignature, new PluginDelegate());
-		this.cb.startSession();
+		//this.cb.startSession();
 	}
 
 	public void showInterstitial(String jsonData) {
