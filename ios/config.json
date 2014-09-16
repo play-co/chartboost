@@ -5,14 +5,10 @@
 		"ChartboostPlugin.mm"
 	],
 	"frameworks": [
-		"QuartzCore",
-		"AdSupport",
-		"SystemConfiguration",
 		"StoreKit",
-		"CoreData",
-		"CoreMedia",
-		"AVFoundation",
+		"Foundation",
 		"CoreGraphics",
-		"libChartboost.a"
+		"UIKit",
+		"Chartboost.framework"
 	]
 }

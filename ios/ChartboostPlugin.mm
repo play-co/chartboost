@@ -13,7 +13,6 @@
 	if (!self) {
 		return nil;
 	}
-	self.cb = nil;
 
 	return self;
 }
@@ -24,12 +23,10 @@
 		NSString *appID = [ios valueForKey:@"chartboostAppID"];
 		NSString *appSignature = [ios valueForKey:@"chartboostAppSignature"];
 
-		self.cb = [Chartboost sharedChartboost];
-		self.cb.appId = appID;
-		self.cb.appSignature = appSignature;
-		self.cb.delegate = self;
-
-		[self.cb startSession];
+		// Initialize the Chartboost library
+		[Chartboost startWithAppId:appID
+			appSignature:appSignature
+			delegate:self];
 
 		NSLog(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
 	}
@@ -39,33 +36,33 @@
 }
 
 - (void) cacheInterstitial:(NSDictionary *)jsonObject {
-	[self.cb cacheInterstitial];
+	[Chartboost cacheInterstitial:CBLocationLevelComplete];
 }
 
 - (void) showInterstitial:(NSDictionary *)jsonObject {
-	if([self.cb hasCachedInterstitial]) {
-		[self.cb showInterstitial];
+	if([Chartboost hasInterstitial:CBLocationLevelComplete]) {
+		[Chartboost showInterstitial:CBLocationLevelComplete];
 	}
 }
 
-- (void)didDismissInterstitial:(NSString *)location {
+- (void)didDismissInterstitial:(CBLocation)location {
 	NSLog(@"{chartboost} dismissed interstitial at location %@", location);
-    [[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
-                                          @"ChartboostAdDismissed",@"name",
-                                          nil]];
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostAdDismissed",@"name",
+		nil]];
 }
 
-- (void)didFailToLoadInterstitial:(NSString *)location {
+- (void)didFailToLoadInterstitial:(CBLocation)location withError:(CBClickError)error {
 	NSLog(@"{chartboost} failure to load interstitial at location %@", location);
-    [[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
-                                          @"ChartboostAdNotAvailable",@"name",
-                                          nil]];
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostAdNotAvailable",@"name",
+		nil]];
 }
 
-- (void)didCacheInterstitial:(NSString *)location {
+- (void)didCacheInterstitial:(CBLocation)location {
 	NSLog(@"{chartboost} interstitial cached at location %@", location);
-    [[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
-                                          @"ChartboostAdAvailable",@"name",
-                                          nil]];
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostAdAvailable",@"name",
+		nil]];
 }
 @end
