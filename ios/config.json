@@ -5,7 +5,10 @@
 		"ChartboostPlugin.mm"
 	],
 	"frameworks": [
-		"AdSupport",
-		"libChartboost.a"
+		"StoreKit",
+		"Foundation",
+		"CoreGraphics",
+		"UIKit",
+		"Chartboost.framework"
 	]
 }

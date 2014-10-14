@@ -1,8 +1,5 @@
 #import "PluginManager.h"
-#import "Chartboost.h"
+#import "Chartboost/Chartboost.h"
 
 @interface ChartboostPlugin : GCPlugin <ChartboostDelegate>
-
-@property (nonatomic, retain) Chartboost *cb;
-
 @end
