@@ -157,13 +157,12 @@ public class ChartboostPlugin implements IPlugin {
 	}
 
 	public boolean consumeOnBackPressed() {
-		return true;
+		if (Chartboost.onBackPressed()) {
+			return true;
+		}
+		return false;
 	}
 
 	public void onBackPressed() {
-          // If an interstitial is on screen, close it. Otherwise continue as normal.
-          if (Chartboost.onBackPressed()) {
-            return;
-          }
 	}
 }
