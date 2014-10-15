@@ -8,7 +8,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.chartboost.sdk.*;
+import com.chartboost.sdk.CBLocation;
+import com.chartboost.sdk.Chartboost;
+import com.chartboost.sdk.ChartboostDelegate;
+import com.chartboost.sdk.Model.CBError.CBClickError;
+import com.chartboost.sdk.Model.CBError.CBImpressionError;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,7 +25,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 public class ChartboostPlugin implements IPlugin {
 
-	private Chartboost cb;
 	private Activity mActivity;
 
 	public class ChartboostAdNotAvailable extends com.tealeaf.event.Event {
@@ -45,114 +48,43 @@ public class ChartboostPlugin implements IPlugin {
 		}
 	}
 
-	private class PluginDelegate implements ChartboostDelegate {
-		@Override
-		public void didCacheMoreApps() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didClickInterstitial(String arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didClickMoreApps() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didCloseInterstitial(String arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didCloseMoreApps() {
-			// TODO Auto-generated method stub
-
-		}
-
+	private ChartboostDelegate delegate = new ChartboostDelegate() {
 		@Override
 		public void didDismissInterstitial(String arg0) {
 			EventQueue.pushEvent(new ChartboostAdDismissed());
-
 		}
 
 		@Override
-		public void didDismissMoreApps() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didFailToLoadInterstitial(String arg0) {
+		public void didFailToLoadInterstitial(String arg0, CBImpressionError error) {
 			EventQueue.pushEvent(new ChartboostAdNotAvailable());
-
 		}
 
 		@Override
-		public void didFailToLoadMoreApps() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didFailToLoadUrl(String arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void didShowInterstitial(String arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void didShowMoreApps() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public boolean shouldDisplayInterstitial(String arg0) {
+		public boolean shouldDisplayInterstitial(String location) {
 			return true;
 		}
 
 		@Override
-		public boolean shouldDisplayLoadingViewForMoreApps() {
-			return true;
-		}
-
-		@Override
-		public boolean shouldDisplayMoreApps() {
-			return true;
-		}
-
-		@Override
-		public boolean shouldRequestInterstitial(String arg0) {
-			return true;
-		}
-
-		@Override
-		public boolean shouldRequestInterstitialsInFirstSession() {
-			return true;
-		}
-
-		@Override
-		public boolean shouldRequestMoreApps() {
+		public boolean shouldRequestInterstitial(String location) {
 			return true;
 		}
 
 		@Override
 		public void didCacheInterstitial(String arg0) {
 			EventQueue.pushEvent(new ChartboostAdAvailable());
-		};
-	}
+		}
+
+		@Override
+		public boolean shouldRequestMoreApps(String location) {
+			return true;
+		}
+
+		@Override
+		public boolean shouldDisplayMoreApps(String location) {
+			return true;
+		}
+
+	};
 
 	public ChartboostPlugin() {
 
@@ -178,39 +110,38 @@ public class ChartboostPlugin implements IPlugin {
 		}
 
 		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
-		this.cb = Chartboost.sharedChartboost();
-		this.cb.onCreate(activity, appID, appSignature, new PluginDelegate());
-		this.cb.startSession();
+		Chartboost.startWithAppId(mActivity, appID, appSignature);
+		Chartboost.setDelegate(delegate);
 	}
 
 	public void showInterstitial(String jsonData) {
-		if(this.cb.hasCachedInterstitial()) {
-			this.cb.showInterstitial();
+		if(Chartboost.hasInterstitial(CBLocation.LOCATION_DEFAULT)) {
+			Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
 		}
 	}
 
 	public void cacheInterstitial(String jsonData) {
-		this.cb.cacheInterstitial();
+		Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
 	}
 
 	public void onResume() {
-
+		Chartboost.onResume(mActivity);
 	}
 
 	public void onStart() {
-		this.cb.onStart(mActivity);
+		Chartboost.onStart(mActivity);
 	}
 
 	public void onPause() {
-
+		Chartboost.onPause(mActivity);
 	}
 
 	public void onStop() {
-		this.cb.onStop(mActivity);
+		Chartboost.onStop(mActivity);
 	}
 
 	public void onDestroy() {
-		this.cb.onDestroy(mActivity);
+		Chartboost.onDestroy(mActivity);
 	}
 
 	public void onNewIntent(Intent intent) {
@@ -226,13 +157,12 @@ public class ChartboostPlugin implements IPlugin {
 	}
 
 	public boolean consumeOnBackPressed() {
-		return true;
+		if (Chartboost.onBackPressed()) {
+			return true;
+		}
+		return false;
 	}
 
 	public void onBackPressed() {
-          // If an interstitial is on screen, close it. Otherwise continue as normal.
-          if (this.cb.onBackPressed()) {
-            return;
-          }
 	}
 }

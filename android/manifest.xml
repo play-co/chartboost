@@ -1,4 +1,6 @@
 <!--START_PLUGINS_MANIFEST-->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <!--END_PLUGINS_MANIFEST-->
 <!--START_PLUGINS_APPLICATION-->
 	<!--Chartboost-->
