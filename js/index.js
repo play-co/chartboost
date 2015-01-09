@@ -1,64 +1,70 @@
 import event.Emitter as Emitter;
+var events = {
+  'ChartboostAdAvailable': 'AdAvailable',
+  'ChartboostAdFailedToLoad': 'AdFailedToLoad',
+  'ChartboostAdDisplayed': 'AdDisplayed',
+  'ChartboostAdDismissed': 'AdDismissed',
+  'ChartboostAdClicked': 'AdClicked',
+  'ChartboostAdClosed': 'AdClosed',
+
+  'ChartboostMoreAppsAvailable': 'MoreAppsAvailable',
+  'ChartboostMoreAppsFailedToLoad': 'MoreAppsFailedToLoad',
+  'ChartboostMoreAppsDisplayed': 'MoreAppsDisplayed',
+  'ChartboostMoreAppsDismissed': 'MoreAppsDismissed',
+  'ChartboostMoreAppsClicked': 'MoreAppsClicked',
+  'ChartboostMoreAppsClosed': 'MoreAppsClosed'
+};
 
 var Chartboost = Class(Emitter, function (supr) {
 
   this.init = function (opts) {
     supr(this, 'init', [opts]);
+    this._addChartboostMethods();
     this._createEventListeners();
   };
 
+  this._sendEmptyEvent = function (eventName) {
+    NATIVE.plugins.sendEvent('ChartboostPlugin', eventName, '{}');
+  };
+
+  this._addChartboostMethods = function () {
+    // interstitial ads
+    this.showInterstitial = function () {
+      this._sendEmptyEvent('showInterstitial');
+    };
+
+    this.showInterstitialIfAvailable = function () {
+      this._sendEmptyEvent('showInterstitialIfAvailable');
+    };
+
+    this.cacheInterstitial = function () {
+      this._sendEmptyEvent('cacheInterstitial');
+    };
+
+    // 'more apps'
+    this.showMoreApps = function () {
+      this._sendEmptyEvent('showMoreApps');
+    };
+
+    this.showMoreAppsIfAvailable = function () {
+      this._sendEmptyEvent('showMoreAppsIfAvailable');
+    };
+
+    this.cacheMoreApps = function () {
+      this._sendEmptyEvent('cacheMoreApps');
+    };
+  };
+
   this._createEventListeners = function () {
-
-    // EVENTS
-    NATIVE.events.registerHandler("ChartboostAdAvailable", bind(this, function () {
-      logger.log("{chartboost} ad available");
-      this.emit("AdAvailable");
-    }));
-
-    NATIVE.events.registerHandler("ChartboostAdFailedToLoad", bind(this, function () {
-      logger.log("{chartboost} ad failed to load");
-      this.emit("AdFailedToLoad");
-    }));
-
-    NATIVE.events.registerHandler("ChartboostAdDisplayed", bind(this, function () {
-      logger.log("{chartboost} ad displayed");
-      this.emit("AdDisplayed");
-    }));
-
-    NATIVE.events.registerHandler("ChartboostAdDismissed", bind(this, function () {
-      logger.log("{chartboost} ad dismissed");
-      this.emit("AdDismissed");
-    }));
-
-    NATIVE.events.registerHandler("ChartboostAdClosed", bind(this, function () {
-      logger.log("{chartboost} ad closed");
-      this.emit("AdClosed");
-    }));
-
-    NATIVE.events.registerHandler("ChartboostAdClicked", bind(this, function () {
-      logger.log("{chartboost} ad clicked");
-      this.emit("AdClicked");
-    }));
-
-  };
-
-  // METHODS
-  this.showInterstitial = function() {
-    NATIVE.plugins.sendEvent(
-      "ChartboostPlugin", "showInterstitial", JSON.stringify({})
-    );
-  };
-
-  this.showInterstitialIfAvailable = function() {
-    NATIVE.plugins.sendEvent(
-      "ChartboostPlugin", "showInterstitialIfAvailable", JSON.stringify({})
-    );
-  };
-
-  this.cacheInterstitial = function() {
-   NATIVE.plugins.sendEvent(
-      "ChartboostPlugin", "cacheInterstitial", JSON.stringify({})
-    );
+    var eventNames = Object.keys(events);
+    for (var i = 0; i < eventNames.length; i++) {
+      var eventName = eventNames[i];
+      var eventNameJS = events[eventName];
+      NATIVE.events.registerHandler(eventName, bind(this, function (eventName, eventNameJS) {
+        logger.log("{chartboost} " + eventName);
+        this.emit(eventNameJS);
+      }, eventName, eventNameJS));
+    }
   };
 });
 

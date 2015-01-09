@@ -63,6 +63,42 @@ public class ChartboostPlugin implements IPlugin {
 		}
 	}
 
+	public class ChartboostMoreAppsFailedToLoad extends com.tealeaf.event.Event {
+		public ChartboostMoreAppsFailedToLoad() {
+			super("ChartboostMoreAppsFailedToLoad");
+		}
+	}
+
+	public class ChartboostMoreAppsAvailable extends com.tealeaf.event.Event {
+		public ChartboostMoreAppsAvailable() {
+			super("ChartboostMoreAppsAvailable");
+		}
+	}
+
+	public class ChartboostMoreAppsDisplayed extends com.tealeaf.event.Event {
+		public ChartboostMoreAppsDisplayed() {
+			super("ChartboostMoreAppsDisplayed");
+		}
+	}
+
+	public class ChartboostMoreAppsDismissed extends com.tealeaf.event.Event {
+		public ChartboostMoreAppsDismissed() {
+			super("ChartboostMoreAppsDismissed");
+		}
+	}
+
+	public class ChartboostMoreAppsClicked extends com.tealeaf.event.Event {
+		public ChartboostMoreAppsClicked() {
+			super("ChartboostMoreAppsClicked");
+		}
+	}
+
+	public class ChartboostMoreAppsClosed extends com.tealeaf.event.Event {
+		public ChartboostMoreAppsClosed() {
+			super("ChartboostMoreAppsClosed");
+		}
+	}
+
 	private ChartboostDelegate delegate = new ChartboostDelegate() {
 
 		@Override
@@ -95,7 +131,6 @@ public class ChartboostPlugin implements IPlugin {
 			EventQueue.pushEvent(new ChartboostAdClosed());
 		}
 
-
 		@Override
 		public boolean shouldDisplayInterstitial(String location) {
 			return true;
@@ -105,13 +140,44 @@ public class ChartboostPlugin implements IPlugin {
 			return true;
 		}
 
+
 		@Override
-		public boolean shouldRequestMoreApps(String location) {
-			return true;
+		public void didCacheMoreApps(String location) {
+			EventQueue.pushEvent(new ChartboostMoreAppsAvailable());
+		}
+
+		@Override
+		public void didFailToLoadMoreApps(String location, CBImpressionError error) {
+			EventQueue.pushEvent(new ChartboostMoreAppsFailedToLoad());
+		}
+
+		@Override
+		public void didDisplayMoreApps(String location) {
+			EventQueue.pushEvent(new ChartboostMoreAppsDisplayed());
+		}
+
+		@Override
+		public void didDismissMoreApps(String location) {
+			EventQueue.pushEvent(new ChartboostMoreAppsDismissed());
+		}
+
+		@Override
+		public void didClickMoreApps(String location) {
+			EventQueue.pushEvent(new ChartboostMoreAppsClicked());
+		}
+
+		@Override
+		public void didCloseMoreApps(String location) {
+			EventQueue.pushEvent(new ChartboostMoreAppsClosed());
 		}
 
 		@Override
 		public boolean shouldDisplayMoreApps(String location) {
+			return true;
+		}
+
+		@Override
+		public boolean shouldRequestMoreApps(String location) {
 			return true;
 		}
 
@@ -129,6 +195,21 @@ public class ChartboostPlugin implements IPlugin {
 
 	public void cacheInterstitial(String jsonData) {
 		Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
+	}
+
+
+	public void showMoreApps(String jsonData) {
+		Chartboost.showMoreApps(CBLocation.LOCATION_DEFAULT);
+	}
+
+	public void showMoreAppsIfAvailable(String jsonData) {
+		if (Chartboost.hasMoreApps(CBLocation.LOCATION_DEFAULT)) {
+			Chartboost.showMoreApps(CBLocation.LOCATION_DEFAULT);
+		}
+	}
+
+	public void cacheMoreApps(String jsonData) {
+		Chartboost.cacheMoreApps(CBLocation.LOCATION_DEFAULT);
 	}
 
 	public ChartboostPlugin() { }

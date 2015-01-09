@@ -117,4 +117,119 @@
 		@"ChartboostAdClicked",@"name",
 		nil]];
 }
+
+
+/* More Apps */
+
+
+/*
+ Cache an "more applications" at the given CBLocation.
+ This method will first check if there is a locally cached "more applications"
+ for the given CBLocation and, if found, will do nothing. If no locally cached
+ data exists the method will attempt to fetch data from the Chartboost API
+ server.
+ */
+- (void) cacheMoreApps:(NSDictionary *)jsonObject {
+	[Chartboost cacheMoreApps:CBLocationLevelComplete];
+}
+
+/*
+ Present an "more applications" for the given CBLocation.
+ @discussion This method will first check if there is a locally cached "more
+ applications" for the given CBLocation and, if found, will present using the
+ locally cached data.  If no locally cached data exists the method will attempt
+ to fetch data from the Chartboost API server and present it.  If the
+ Chartboost API server is unavailable or there is no eligible "more
+ applications" to present in the given CBLocation this method is a no-op.
+ */
+- (void) showMoreApps:(NSDictionary *)jsonObject {
+	[Chartboost showMoreApps:CBLocationLevelComplete];
+}
+
+- (void) showMoreAppsIfAvailable:(NSDictionary *)jsonObject {
+	if([Chartboost hasMoreApps:CBLocationLevelComplete]) {
+		NSLOG(@"{chartboost} Showing Cached 'More Apps'");
+		[Chartboost showMoreApps:CBLocationLevelComplete];
+	}
+}
+
+/*
+ Called after an "more applications" has been loaded from the Chartboost API
+ servers and cached locally.
+ @discussion Implement to be notified of when an "more applications" has been
+ loaded from the Chartboost API servers and cached locally for a given
+ CBLocation.
+ */
+- (void)didCacheMoreApps:(CBLocation)location {
+	NSLog(@"{chartboost} 'more apps' cached at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostMoreAppsAvailable",@"name",
+		nil]];
+}
+
+/*!
+ Called after an "more applications" has attempted to load from the Chartboost
+ API servers but failed.
+ @discussion Implement to be notified of when an "more applications" has
+ attempted to load from the Chartboost API servers but failed for a given
+ CBLocation.
+ */
+- (void)didFailToLoadMoreApps:(CBLocation)location withError:(CBLoadError)error {
+	NSLog(@"{chartboost} 'more apps' failed to load at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostMoreAppsFailedToLoad",@"name",
+		nil]];
+}
+
+/*!
+ Called after an "more applications" has been displayed on the screen.
+ @discussion Implement to be notified of when an "more applications" has
+ been displayed on the screen for a given CBLocation.
+ */
+- (void)didDisplayMoreApps:(CBLocation)location {
+	NSLog(@"{chartboost} displayed 'more apps' at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostMoreAppsDisplayed",@"name",
+		nil]];
+}
+
+/*!
+ Called after an "more applications" has been dismissed.
+ @discussion Implement to be notified of when an "more applications" has been
+ dismissed for a given CBLocation.  "Dismissal" is defined as any action that
+ removed the "more applications" UI such as a click or close.
+ */
+- (void)didDismissMoreApps:(CBLocation)location {
+	NSLog(@"{chartboost} dismissed 'more apps' at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostMoreAppsDismissed",@"name",
+		nil]];
+}
+
+/*!
+ Called after an "more applications" has been closed.
+ @discussion Implement to be notified of when an "more applications" has been
+ closed for a given CBLocation.  "Closed" is defined as clicking the close
+ interface for the "more applications".
+ */
+- (void)didCloseMoreApps:(CBLocation)location {
+	NSLog(@"{chartboost} closed 'more apps' at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostMoreAppsClosed",@"name",
+		nil]];
+}
+
+/*!
+ @abstract
+ Called after an "more applications" has been clicked.
+ @discussion Implement to be notified of when an "more applications" has been
+ clicked for a given CBLocation.  "Clicked" is defined as clicking the creative
+ interface for the "more applications".
+ */
+- (void)didClickMoreApps:(CBLocation)location {
+	NSLog(@"{chartboost} clicked 'more apps' at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostMoreAppsClicked",@"name",
+		nil]];
+}
 @end

@@ -44,13 +44,27 @@ successfully building and running your game on a network-connected device.
 
 ## Usage
 
-To show interstitials using Chartboost in your game, first import the chartboost
-object:
+To start using Chartboost in your game, first import the chartboost object:
 
 ~~~
 import chartboost;
 ~~~
 
+
+#### Methods
+The chartboost plugin provides methods that you can call to cause actions like
+preloading or displaying an ad (or video, or 'more apps' popup). These generally
+follow the same pattern of showThing, cacheThing, and showThingIfAvailable.
+
+#### Events
+The chartboost plugin emits several events that your application can listen for
+to react to various states of the plugin. You do not need to do anything with
+these events unless you want to do some custom action (analytics, wait for
+cached ads, etc) when one of these events occurs. Some events overlap, like
+clicked/closed and dismissed - only listen for what you are interested in.
+
+
+### Interstitial Ads
 
 You can show interstitials by calling:
 
@@ -72,24 +86,54 @@ interstitial, but only if one is cached:
 chartboost.showInterstitialIfAvailable();
 ~~~
 
-
-## Events
-
-The chartboost plugin emits several events that your application can listen for
-to react to various states of the plugin. You do not need to do anything with
-these events unless you want to do some custom action (analytics, wait for
-cached ads, etc) when one of these events occurs. Some events overlap, like
-clicked/closed and dismissed - only listen for what you are interested in.
-
-`ChartboostAdAvailable` - emitted when an ad has been cached and is ready to be
+#### Events
+`AdAvailable` - emitted when an ad has been cached and is ready to be
 shown
-`ChartboostAdFailedToLoad` - emitted when an ad fails to load from the
+`AdFailedToLoad` - emitted when an ad fails to load from the
 chartboost servers
-`ChartboostAdDisplayed` - emitted when an ad is shown to a user
-`ChartboostAdDismissed` - emitted when an ad goes away, either from the user
+`AdDisplayed` - emitted when an ad is shown to a user
+`AdDismissed` - emitted when an ad goes away, either from the user
 clicking it or closing it
-`ChartboostAdClosed` - emitted when an ad is closed by the user
-`ChartboostAdClicked` - emitted when an ad is clicked by the user
+`AdClosed` - emitted when an ad is closed by the user
+`AdClicked` - emitted when an ad is clicked by the user
+
+Example:
+~~~
+chartboost.on('AdClicked', function () { logger.log('user clicked an ad!'); });
+~~~
+
+
+### More Apps
+
+Control the 'more apps' feature in the same way as interstitial ads:
+
+~~~
+// show 'more apps' now, regardless of cache
+chartboost.showMoreApps();
+
+// load and cache 'more apps' for displaying later
+chartboost.cacheMoreApps();
+
+// display 'more apps' if one has been cached
+chartboost.showMoreAppsIfAvailable();
+~~~
+
+#### Events
+`MoreAppsAvailable` - emitted when a 'more apps' dialog is ready
+`MoreAppsFailedToLoad` - emitted when a 'more apps' fails to load from
+the chartboost servers
+`MoreAppsDisplayed` - emitted when a 'more apps' is shown to a user
+`MoreAppsDismissed` - emitted when a 'more apps' goes away, either
+from the user clicking it or closing it
+`MoreAppsClosed` - emitted when a 'more apps' is closed by the user
+`MoreAppsClicked` - emitted when a 'more apps' is clicked by the user
+
+Example:
+~~~
+chartboost.on('MoreAppsClicked', function () {
+  logger.log('user clicked on more apps!');
+});
+~~~
 
 
 ## Chartboost SDK
