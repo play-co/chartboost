@@ -41,18 +41,66 @@ Note that the manifest keys are case-sensitive.
 You can test for successful integration via the Chartboost website after
 successfully building and running your game on a network-connected device.
 
-To show interstitials using Chartboost in your game, import the chartboost
+
+## Usage
+
+To show interstitials using Chartboost in your game, first import the chartboost
 object:
 
 ~~~
 import chartboost;
 ~~~
 
-Then show interstitials by calling:
+
+You can show interstitials by calling:
 
 ~~~
 chartboost.showInterstitial();
 ~~~
+
+To improve user experience, you can pre-load and cache interstitial ads by first
+calling:
+
+~~~
+chartboost.cacheInterstitial();
+~~~
+
+The chartboost plugin also provides a helper function that will show an
+interstitial, but only if one is cached:
+
+~~~
+chartboost.showInterstitialIfAvailable();
+~~~
+
+
+## Events
+
+The chartboost plugin emits several events that your application can listen for
+to react to various states of the plugin. You do not need to do anything with
+these events unless you want to do some custom action (analytics, wait for
+cached ads, etc) when one of these events occurs. Some events overlap, like
+clicked/closed and dismissed - only listen for what you are interested in.
+
+`ChartboostAdAvailable` - emitted when an ad has been cached and is ready to be
+shown
+`ChartboostAdFailedToLoad` - emitted when an ad fails to load from the
+chartboost servers
+`ChartboostAdDisplayed` - emitted when an ad is shown to a user
+`ChartboostAdDismissed` - emitted when an ad goes away, either from the user
+clicking it or closing it
+`ChartboostAdClosed` - emitted when an ad is closed by the user
+`ChartboostAdClicked` - emitted when an ad is clicked by the user
+
+
+## Chartboost SDK
+The chartboost plugin is currently using version 5.1.0 of the chartboost SDK on
+both android and ios.
+
+NOTE: On ios, their SDK directory structure has been slightly changed to remove
+the symlinks they ship with and delete the extra Versions folder (leaving it
+like a standard framework folder with Chartboost and Headers at the top level).
+If you change the SDK, you will likely need to repeat the above change.
+
 
 ## Demo
 Check out the [chartboost demo
