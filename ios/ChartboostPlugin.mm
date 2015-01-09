@@ -39,6 +39,7 @@
 }
 
 - (void) showInterstitial:(NSDictionary *)jsonObject {
+	NSLOG(@"{chartboost} Requesting Interstitial");
 	[self.cb showInterstitial];
 }
 @end
