@@ -99,6 +99,52 @@ public class ChartboostPlugin implements IPlugin {
 		}
 	}
 
+
+	public class ChartboostRewardedVideoFailedToLoad extends com.tealeaf.event.Event {
+		public ChartboostRewardedVideoFailedToLoad() {
+			super("ChartboostRewardedVideoFailedToLoad");
+		}
+	}
+
+	public class ChartboostRewardedVideoAvailable extends com.tealeaf.event.Event {
+		public ChartboostRewardedVideoAvailable() {
+			super("ChartboostRewardedVideoAvailable");
+		}
+	}
+
+	public class ChartboostRewardedVideoDisplayed extends com.tealeaf.event.Event {
+		public ChartboostRewardedVideoDisplayed() {
+			super("ChartboostRewardedVideoDisplayed");
+		}
+	}
+
+	public class ChartboostRewardedVideoDismissed extends com.tealeaf.event.Event {
+		public ChartboostRewardedVideoDismissed() {
+			super("ChartboostRewardedVideoDismissed");
+		}
+	}
+
+	public class ChartboostRewardedVideoClicked extends com.tealeaf.event.Event {
+		public ChartboostRewardedVideoClicked() {
+			super("ChartboostRewardedVideoClicked");
+		}
+	}
+
+	public class ChartboostRewardedVideoClosed extends com.tealeaf.event.Event {
+		public ChartboostRewardedVideoClosed() {
+			super("ChartboostRewardedVideoClosed");
+		}
+	}
+
+	public class ChartboostRewardedVideoCompleted extends com.tealeaf.event.Event {
+		int reward;
+		public ChartboostRewardedVideoCompleted(int reward) {
+			super("ChartboostRewardedVideoCompleted");
+			this.reward = reward;
+		}
+	}
+
+
 	private ChartboostDelegate delegate = new ChartboostDelegate() {
 
 		@Override
@@ -181,6 +227,46 @@ public class ChartboostPlugin implements IPlugin {
 			return true;
 		}
 
+
+		@Override
+		public void didCacheRewardedVideo(String location) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoAvailable());
+		}
+
+		@Override
+		public void didFailToLoadRewardedVideo(String location, CBImpressionError error) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoFailedToLoad());
+		}
+
+		@Override
+		public void didDisplayRewardedVideo(String location) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoDisplayed());
+		}
+
+		@Override
+		public void didDismissRewardedVideo(String location) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoDismissed());
+		}
+
+		@Override
+		public void didClickRewardedVideo(String location) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoClicked());
+		}
+
+		@Override
+		public void didCloseRewardedVideo(String location) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoClosed());
+		}
+
+		@Override
+		public void didCompleteRewardedVideo(String location, int reward) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoCompleted(reward));
+		}
+
+		@Override
+		public boolean shouldDisplayRewardedVideo(String location) {
+			return true;
+		}
 	};
 
 	public void showInterstitial(String jsonData) {
@@ -212,6 +298,21 @@ public class ChartboostPlugin implements IPlugin {
 		Chartboost.cacheMoreApps(CBLocation.LOCATION_DEFAULT);
 	}
 
+
+	public void showRewardedVideo(String jsonData) {
+		Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
+	}
+
+	public void showRewardedVideoIfAvailable(String jsonData) {
+		if (Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT)) {
+			Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
+		}
+	}
+
+	public void cacheRewardedVideo(String jsonData) {
+		Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
+	}
+
 	public ChartboostPlugin() { }
 
 	public void onCreateApplication(Context applicationContext) { }
@@ -234,9 +335,11 @@ public class ChartboostPlugin implements IPlugin {
 		logger.log("{chartboost} Initializing from manifest with AppID=", appID, "and signature=", appSignature);
 		Chartboost.startWithAppId(mActivity, appID, appSignature);
 		Chartboost.setDelegate(delegate);
+		Chartboost.onCreate(mActivity);
 	}
 
 	public void onResume() {
+		logger.log("{chartboost} onResume");
 		Chartboost.onResume(mActivity);
 	}
 

@@ -12,7 +12,15 @@ var events = {
   'ChartboostMoreAppsDisplayed': 'MoreAppsDisplayed',
   'ChartboostMoreAppsDismissed': 'MoreAppsDismissed',
   'ChartboostMoreAppsClicked': 'MoreAppsClicked',
-  'ChartboostMoreAppsClosed': 'MoreAppsClosed'
+  'ChartboostMoreAppsClosed': 'MoreAppsClosed',
+
+  'ChartboostRewardedVideoAvailable': 'RewardedVideoAvailable',
+  'ChartboostRewardedVideoFailedToLoad': 'RewardedVideoFailedToLoad',
+  'ChartboostRewardedVideoDisplayed': 'RewardedVideoDisplayed',
+  'ChartboostRewardedVideoDismissed': 'RewardedVideoDismissed',
+  'ChartboostRewardedVideoClicked': 'RewardedVideoClicked',
+  'ChartboostRewardedVideoClosed': 'RewardedVideoClosed'
+  //'ChartboostRewardedVideoCompleted': 'RewardedVideoCompleted'
 };
 
 var Chartboost = Class(Emitter, function (supr) {
@@ -53,6 +61,20 @@ var Chartboost = Class(Emitter, function (supr) {
     this.cacheMoreApps = function () {
       this._sendEmptyEvent('cacheMoreApps');
     };
+
+
+    // rewarded video
+    this.showRewardedVideo = function () {
+      this._sendEmptyEvent('showRewardedVideo');
+    };
+
+    this.showRewardedVideoIfAvailable = function () {
+      this._sendEmptyEvent('showRewardedVideoIfAvailable');
+    };
+
+    this.cacheRewardedVideo = function () {
+      this._sendEmptyEvent('cacheRewardedVideo');
+    };
   };
 
   this._createEventListeners = function () {
@@ -65,6 +87,12 @@ var Chartboost = Class(Emitter, function (supr) {
         this.emit(eventNameJS);
       }, eventName, eventNameJS));
     }
+
+    NATIVE.events.registerHandler('ChartboostRewardedVideoCompleted', bind(this, function (evt) {
+      logger.log('{chartboost} ChartboostRewardedVideoCompleted', typeof evt, evt);
+      this.emit('RewardedVideoCompleted', evt.reward);
+    }));
+
   };
 });
 

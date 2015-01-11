@@ -74,7 +74,6 @@
 		nil]];
 }
 
-
 /*
  Called after an interstitial has been displayed on the screen.
  */
@@ -230,6 +229,106 @@
 	NSLog(@"{chartboost} clicked 'more apps' at location %@", location);
 	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
 		@"ChartboostMoreAppsClicked",@"name",
+		nil]];
+}
+
+
+/* Rewarded Video */
+- (void) cacheRewardedVideo:(NSDictionary *)jsonObject {
+	[Chartboost cacheRewardedVideo:CBLocationLevelComplete];
+}
+
+- (void) showRewardedVideo:(NSDictionary *)jsonObject {
+	[Chartboost showRewardedVideo:CBLocationLevelComplete];
+}
+
+- (void) showRewardedVideoIfAvailable:(NSDictionary *)jsonObject {
+	if([Chartboost hasRewardedVideo:CBLocationLevelComplete]) {
+		NSLOG(@"{chartboost} Showing Cached Rewarded Video");
+		[Chartboost showRewardedVideo:CBLocationLevelComplete];
+	}
+}
+/*!
+ Called after a rewarded video has been loaded from the Chartboost API
+ servers and cached locally.
+ @discussion Implement to be notified of when a rewarded video has been loaded
+ from the Chartboost API servers and cached locally for a given CBLocation.
+ */
+- (void)didCacheRewardedVideo:(CBLocation)location {
+	NSLog(@"{chartboost} cached rewarded video at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostRewardedVideoAvailable",@"name",
+		nil]];
+}
+
+/*!
+ Called after a rewarded video has attempted to load from the Chartboost API
+ servers but failed.
+ @discussion Implement to be notified of when an rewarded video has attempted
+ to load from the Chartboost API servers but failed for a given CBLocation.
+ */
+- (void)didFailToLoadRewardedVideo:(CBLocation)location
+                         withError:(CBLoadError)error {
+	NSLog(@"{chartboost} failed to load rewarded video at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostRewardedVideoFailedToLoad",@"name",
+		nil]];
+}
+
+/*!
+ Called after a rewarded video has been dismissed.
+ @discussion Implement to be notified of when a rewarded video has been
+ dismissed for a given CBLocation.  "Dismissal" is defined as any action that
+ removed the rewarded video UI such as a click or close.
+ */
+- (void)didDismissRewardedVideo:(CBLocation)location {
+	NSLog(@"{chartboost} dismissed rewarded video at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostRewardedVideoDismissed",@"name",
+		nil]];
+}
+
+/*!
+ Called after a rewarded video has been closed.
+ @discussion Implement to be notified of when a rewarded video has been closed
+ for a given CBLocation.  "Closed" is defined as clicking the close interface
+ for the rewarded video.
+ */
+- (void)didCloseRewardedVideo:(CBLocation)location {
+	NSLog(@"{chartboost} closed rewarded video at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostRewardedVideoClosed",@"name",
+		nil]];
+}
+
+/*!
+ Called after a rewarded video has been clicked.
+ @discussion Implement to be notified of when a rewarded video has been click
+ for a given CBLocation.  "Clicked" is defined as clicking the creative
+ interface for the rewarded video.
+ */
+- (void)didClickRewardedVideo:(CBLocation)location {
+	NSLog(@"{chartboost} clicked rewarded video at location %@", location);
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostRewardedVideoClicked",@"name",
+		nil]];
+}
+
+/*!
+ Called after a rewarded video has been viewed completely and user is eligible
+ for reward.
+ @param reward The reward for watching the video.
+ @param location The location for the Chartboost impression type.
+ @discussion Implement to be notified of when a rewarded video has been viewed
+ completely and user is eligible for reward.
+ */
+- (void)didCompleteRewardedVideo:(CBLocation)location withReward:(int)reward {
+	NSLog(@"{chartboost} completed rewarded video at location %@ with reward %d", location, reward);
+    NSNumber *_reward = [NSNumber numberWithInt:reward];
+
+	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"ChartboostRewardedVideoCompleted",@"name",
+		_reward,@"reward",
 		nil]];
 }
 @end

@@ -136,6 +136,41 @@ chartboost.on('MoreAppsClicked', function () {
 ~~~
 
 
+### Rewarded Video
+
+Control the rewarded video feature in the same way as interstitial ads, with the
+addition of the `RewardedVideoCompleted` event.
+
+~~~
+// show rewarded video now, regardless of cache
+chartboost.showRewardedVideo();
+
+// load and cache rewarded video for displaying later
+chartboost.cacheRewardedVideo();
+
+// display rewarded video if one has been cached
+chartboost.showRewardedVideoIfAvailable();
+~~~
+
+#### Events
+`RewardedVideoAvailable` - emitted when a rewarded video dialog is ready
+`RewardedVideoFailedToLoad` - emitted when a rewarded video fails to load from
+the chartboost servers
+`RewardedVideoDisplayed` - emitted when a rewarded video is shown to a user
+`RewardedVideoDismissed` - emitted when a rewarded video goes away, either
+from the user clicking it or closing it
+`RewardedVideoClosed` - emitted when a rewarded video is closed by the user
+`RewardedVideoClicked` - emitted when a rewarded video is clicked by the user
+`RewardedVideoCompleted` - emitted when a rewarded video is completed
+  - this includes the 'reward' integer associated with the reward as a parameter
+
+Example:
+~~~
+chartboost.on('RewardedVideoCompleted', function (reward) {
+  logger.log('user completed rewarded video', 'reward: ', reward);
+});
+~~~
+
 ## Chartboost SDK
 The chartboost plugin is currently using version 5.1.0 of the chartboost SDK on
 both android and ios.
