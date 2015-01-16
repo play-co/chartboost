@@ -331,4 +331,12 @@
 		_reward,@"reward",
 		nil]];
 }
+
+- (void) isRewardedVideoAvailable:(NSDictionary *)jsonObject {
+	if([Chartboost hasRewardedVideo:CBLocationLevelComplete]) {
+		[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"ChartboostRewardedVideoAvailable",@"name",
+			nil]];
+	}
+}
 @end

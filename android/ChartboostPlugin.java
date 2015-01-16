@@ -313,6 +313,12 @@ public class ChartboostPlugin implements IPlugin {
 		Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
 	}
 
+	public void isRewardedVideoAvailable(String jsonData) {
+		if (Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT)) {
+			EventQueue.pushEvent(new ChartboostRewardedVideoAvailable());
+		}
+	}
+
 	public ChartboostPlugin() { }
 
 	public void onCreateApplication(Context applicationContext) { }

@@ -74,6 +74,9 @@ var Chartboost = Class(Emitter, function (supr) {
 
     this.cacheRewardedVideo = function () {
       this._sendEmptyEvent('cacheRewardedVideo');
+
+    this.isRewardedVideoAvailable = function () {
+      this._sendEmptyEvent('isRewardedVideoAvailable');
     };
   };
 
