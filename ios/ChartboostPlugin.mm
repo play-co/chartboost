@@ -317,6 +317,7 @@
 /*!
  Called after a rewarded video has been viewed completely and user is eligible
  for reward.
+ 
  @param reward The reward for watching the video.
  @param location The location for the Chartboost impression type.
  @discussion Implement to be notified of when a rewarded video has been viewed
@@ -324,12 +325,12 @@
  */
 - (void)didCompleteRewardedVideo:(CBLocation)location withReward:(int)reward {
 	NSLog(@"{chartboost} completed rewarded video at location %@ with reward %d", location, reward);
-    NSNumber *_reward = [NSNumber numberWithInt:reward];
+//    NSNumber *_reward = [NSNumber numberWithInt:reward];
 
-	[[PluginManager get] dispatchJSEvent:[NSDictionary dictionaryWithObjectsAndKeys:
-		@"ChartboostRewardedVideoCompleted",@"name",
-		_reward,@"reward",
-		nil]];
+    [[PluginManager get] dispatchJSEvent:@{
+		@"name": @"ChartboostRewardedVideoCompleted"
+//		@"reward": _reward,
+        }];
 }
 
 - (void) isRewardedVideoAvailable:(NSDictionary *)jsonObject {
