@@ -74,6 +74,7 @@ var Chartboost = Class(Emitter, function (supr) {
 
     this.cacheRewardedVideo = function () {
       this._sendEmptyEvent('cacheRewardedVideo');
+    };
 
     this.isRewardedVideoAvailable = function () {
       this._sendEmptyEvent('isRewardedVideoAvailable');
@@ -85,10 +86,11 @@ var Chartboost = Class(Emitter, function (supr) {
     for (var i = 0; i < eventNames.length; i++) {
       var eventName = eventNames[i];
       var eventNameJS = events[eventName];
-      NATIVE.events.registerHandler(eventName, bind(this, function (eventName, eventNameJS) {
-        logger.log("{chartboost} " + eventName);
+      NATIVE.events.registerHandler(eventName, function (eventName,
+                                                         eventNameJS) {
+        logger.log('{chartboost}', eventName);
         this.emit(eventNameJS);
-      }, eventName, eventNameJS));
+      }.bind(this, eventName, eventNameJS));
     }
 
     NATIVE.events.registerHandler('ChartboostRewardedVideoCompleted', bind(this, function (evt) {
