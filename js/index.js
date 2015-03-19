@@ -93,13 +93,10 @@ var Chartboost = Class(Emitter, function (supr) {
     }
 
     NATIVE.events.registerHandler('ChartboostRewardedVideoCompleted', bind(this, function (evt) {
-      logger.log(
-        '{chartboost} ChartboostRewardedVideoCompleted', typeof evt, evt
-      );
       this.emit('RewardedVideoCompleted', evt.reward);
     }));
-
   };
+
 });
 
 exports = new Chartboost();
