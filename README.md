@@ -4,6 +4,8 @@ This plugin allows you to show interstitials using the
 [Chartboost](https://chartboost.com/) toolkit. Both iOS and Android targets are
 supported.
 
+Check out the [Chartboost Demo
+App](https://github.com/gameclosure/demoChartboost) to see the module in action.
 
 ## Installation
 
@@ -11,7 +13,7 @@ Install the chartboost module into your application using the standard devkit
 install process:
 
 ~~~
-devkit install https://github.com/gameclosure/chartboost#v2.0.0
+devkit install https://github.com/gameclosure/chartboost#v2.1.0
 ~~~
 
 
@@ -172,7 +174,7 @@ chartboost.on('RewardedVideoCompleted', function (reward) {
 ~~~
 
 ## Chartboost SDK
-The chartboost plugin is currently using version 5.1.0 of the chartboost SDK on
+The chartboost plugin is currently using version 5.1.3 of the chartboost SDK on
 both android and ios.
 
 NOTE: On ios, their SDK directory structure has been slightly changed to remove
