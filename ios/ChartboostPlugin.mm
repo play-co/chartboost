@@ -1,5 +1,4 @@
 #import "ChartboostPlugin.h"
-#import "platform/log.h"
 
 @implementation ChartboostPlugin
 
@@ -29,10 +28,12 @@
 			appSignature:appSignature
 			delegate:self];
 
-		NSLOG(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
+#ifdef DEBUG
+		NSLog(@"{chartboost} Initialized with manifest AppID: '%@'", appID);
+#endif
 	}
 	@catch (NSException *exception) {
-		NSLOG(@"{chartboost} Failure to get ios:Chartboost keys from manifest file: %@", exception);
+		NSLog(@"{chartboost} Failure to get ios:Chartboost keys from manifest file: %@", exception);
 	}
 }
 
@@ -47,7 +48,7 @@
 
 - (void) showInterstitialIfAvailable:(NSDictionary *)jsonObject {
 	if([Chartboost hasInterstitial:CBLocationLevelComplete]) {
-		NSLOG(@"{chartboost} Showing Cached Interstitial");
+		NSLog(@"{chartboost} Showing Cached Interstitial");
 		[Chartboost showInterstitial:CBLocationLevelComplete];
 	}
 }
@@ -147,7 +148,7 @@
 
 - (void) showMoreAppsIfAvailable:(NSDictionary *)jsonObject {
 	if([Chartboost hasMoreApps:CBLocationLevelComplete]) {
-		NSLOG(@"{chartboost} Showing Cached 'More Apps'");
+		NSLog(@"{chartboost} Showing Cached 'More Apps'");
 		[Chartboost showMoreApps:CBLocationLevelComplete];
 	}
 }
@@ -244,7 +245,7 @@
 
 - (void) showRewardedVideoIfAvailable:(NSDictionary *)jsonObject {
 	if([Chartboost hasRewardedVideo:CBLocationLevelComplete]) {
-		NSLOG(@"{chartboost} Showing Cached Rewarded Video");
+		NSLog(@"{chartboost} Showing Cached Rewarded Video");
 		[Chartboost showRewardedVideo:CBLocationLevelComplete];
 	}
 }
